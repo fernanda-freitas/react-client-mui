@@ -77,10 +77,12 @@ const PostPage = ({ mode }: IProps) => {
             const response = await axios.get("/journals");
             results = response.data.results;
         }
+
         return results;
     }
 
     if (isError) return <h1>Problems loading...</h1>;
+    console.log(data)
 
     return (
         <>
