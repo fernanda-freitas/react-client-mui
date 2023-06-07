@@ -77,6 +77,7 @@ const PostPage = ({ mode }: IProps) => {
             const response = await axios.get("/journals");
             results = response.data.results;
         }
+
         return results;
     }
 
