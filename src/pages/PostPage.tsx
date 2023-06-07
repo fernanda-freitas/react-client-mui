@@ -82,7 +82,6 @@ const PostPage = ({ mode }: IProps) => {
     }
 
     if (isError) return <h1>Problems loading...</h1>;
-    console.log(data)
 
     return (
         <>
