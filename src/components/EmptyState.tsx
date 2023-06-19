@@ -4,7 +4,7 @@ export interface EmptyInterface {
 
 const EmptyState = ({ message }: EmptyInterface) => {
     return (
-        <h2>{message}</h2>
+        <p>{message}</p>
     )
 }
 
