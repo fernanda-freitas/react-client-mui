@@ -7,6 +7,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import axios from "../api/axios.tsx";
 import { IAuthContext } from "../context/AuthProvider.tsx";
+import EmptyState from "../components/EmptyState.tsx";
 
 export interface PostInterface {
     id: number;
@@ -102,7 +103,7 @@ const PostPage = ({ mode }: IProps) => {
                     New Post
                 </Button>
             </Stack>
-
+            <EmptyState message="There are no posts yet."/>
             <PostList posts={data} isLoading={isLoading} />
         </>
     );
