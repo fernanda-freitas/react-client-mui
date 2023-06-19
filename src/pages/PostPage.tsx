@@ -103,8 +103,7 @@ const PostPage = ({ mode }: IProps) => {
                     New Post
                 </Button>
             </Stack>
-            <EmptyState message="There are no posts yet."/>
-            <PostList posts={data} isLoading={isLoading} />
+            {data.length ? <PostList posts={data} isLoading={isLoading} /> : <EmptyState message="There are no posts yet."/>}
         </>
     );
 };
