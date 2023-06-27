@@ -1,4 +1,4 @@
-import {Card, Typography, Stack, CardContent} from '@mui/material';
+import {Card, Typography} from '@mui/material';
 
 export interface EmptyInterface {
     message: string;
@@ -6,15 +6,11 @@ export interface EmptyInterface {
 
 const EmptyState = ({ message }: EmptyInterface) => {
     return (
-        <Stack alignItems="center" justifyContent="center">
-            <CardContent>
-                <Card sx={{ minWidth: 300, minHeight: 200 }}>
-                    <Stack alignItems="center" justifyContent="center">
-                        <Typography variant="h6">{message}</Typography>
-                    </Stack>
-                </Card>
-            </CardContent>
-        </Stack>
+        <Card sx={{ height: "60vh", display: "flex" }}>
+            <Typography variant='h6' fontWeight={400} alignItems="center" margin={"auto"}>
+                {message}
+            </Typography>
+        </Card>
     )
 }
 
