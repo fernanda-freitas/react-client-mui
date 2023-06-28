@@ -10,6 +10,7 @@ import RequireAuth from "./components/RequireAuth.tsx";
 import useAuth from "./hooks/useAuth.tsx";
 import CreatePostPage from "./pages/CreatePostPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
+import MakeCorrectionPage from "./pages/MakeCorrectionPage.tsx";
 
 const RoutesList = () => {
     const authContext = useAuth();
@@ -17,7 +18,7 @@ const RoutesList = () => {
         throw new Error("AuthContext missing");
     }
 
-    const { currentUser, isAuthenticated, userInfoLoaded } = authContext;
+    const { isAuthenticated, userInfoLoaded } = authContext;
 
     // needed in order to render the layouts correctly.
     // read dev notes in context/AuthProvider
@@ -45,7 +46,7 @@ const RoutesList = () => {
                         !isAuthenticated ? (
                             <IndexPage />
                         ) : (
-                            <PostPage mode="teach" />
+                            <PostPage mode="teach" title="Journals awaiting your correction" />
                         )
                     }
                 />
@@ -60,11 +61,7 @@ const RoutesList = () => {
             <Route element={<LayoutWithContainer />}>
                 <Route
                     path="/journals"
-                    element={
-                        <PostPage
-                            mode={currentUser ? "teach" : "recentlyCorrected"}
-                        />
-                    }
+                    element={<PostPage mode="teach" title="Recently corrected journals" />}
                 />
                 <Route path="journals/:slug" element={<PostDetailPage />} />
             </Route>
@@ -73,9 +70,38 @@ const RoutesList = () => {
 
             <Route element={<RequireAuth />}>
                 <Route element={<LayoutWithContainer />}>
-                    <Route path="teach" element={<PostPage mode="teach" />} />
-                    <Route path="learn" element={<PostPage mode="learn" />} />
+                    <Route
+                        path="teach"
+                        element={
+                            <PostPage
+                                mode="teach"
+                                title="Journals awaiting your correction"
+                            />
+                        }
+                    />
+                    <Route
+                        path="learn"
+                        element={
+                            <PostPage
+                                mode="learn"
+                                title="Journals in the languages you’re studying"
+                            />
+                        }
+                    />
+                    <Route
+                        path="feed/following"
+                        element={
+                            <PostPage
+                                mode="following"
+                                title="Journals from your following"
+                            />
+                        }
+                    />
                     <Route path="create/post" element={<CreatePostPage />} />
+                    <Route
+                        path="journals/:slug/make-corrections"
+                        element={<MakeCorrectionPage />}
+                    />
                 </Route>
             </Route>
 

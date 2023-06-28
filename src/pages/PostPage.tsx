@@ -2,12 +2,10 @@ import PostList from "../components/posts/PostList.tsx";
 import { Button, Stack, Typography } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate.tsx";
-import useAuth from "../hooks/useAuth.tsx";
-import axios from "../api/axios.tsx";
-import { IAuthContext } from "../context/AuthProvider.tsx";
+import { Link } from "react-router-dom";
+import PostService from "../service/post.service.tsx";
 import EmptyState from "../components/EmptyState.tsx";
+
 
 export interface PostInterface {
     id: number;
@@ -38,49 +36,16 @@ export interface PostInterface {
     corrected_by: string[];
 }
 
-const SECTION_TITLE: { [key: string]: string } = {
-    teach: "Journals awaiting your correction",
-    learn: "Journals in the languages you’re studying",
-    recentlyCorrected: "Recently corrected journals",
-};
-
 interface IProps {
-    mode: string;
+    mode: "teach" | "learn" | "following";
+    title: string;
 }
 
-const PostPage = ({ mode }: IProps) => {
-    const axiosPrivate = useAxiosPrivate();
-    const location = useLocation();
-    const navigate = useNavigate();
-
+const PostPage = ({ mode, title }: IProps) => {
     const { isLoading, isError, data } = useQuery({
-        queryKey: ["posts"],
-        queryFn: fetchPosts,
+        queryKey: ["posts", mode],
+        queryFn: () => PostService.getPostList(mode),
     });
-
-    const authContext = useAuth();
-    const { accessToken } = authContext as IAuthContext;
-
-    async function fetchPosts() {
-        let results = [];
-
-        if (accessToken) {
-            try {
-                const response = await axiosPrivate.get("/journals");
-                results = response.data.results;
-            } catch (err) {
-                navigate("/login", {
-                    state: { from: location },
-                    replace: true,
-                });
-            }
-        } else {
-            const response = await axios.get("/journals");
-            results = response.data.results;
-        }
-
-        return results;
-    }
 
     if (isError) return <h1>Problems loading...</h1>;
 
@@ -92,7 +57,7 @@ const PostPage = ({ mode }: IProps) => {
                 justifyContent="space-between"
                 mb={3}
             >
-                <Typography variant="h5">{SECTION_TITLE[mode]}</Typography>
+                <Typography variant="h5">{title}</Typography>
 
                 <Button
                     variant="contained"
